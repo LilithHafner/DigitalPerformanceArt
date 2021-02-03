@@ -1,0 +1,17 @@
+Light = e^(-(r/g.sigma)^2)
+
+Photosynthesis
+Max health
+Attack
+Speed
+Max eating speed
+tick rate
+*strategy
+
+Health
+Energy
+
+
+Complexity = max eating speed/g.mes + speed/g.speed + attack/g.attack + photosyntehsis/g.photosyntehsis + Max health/g.maxhealth + tick rate/g.tick_rate
+Reproduction = g.reproduction*(complexity^2 + complexity)
+Metabolism = g.comlx_met*complexity - g.spd_met*log(1-instant_speed/speed)
