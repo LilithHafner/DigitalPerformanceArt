@@ -23,21 +23,28 @@ def plot_poly(x,y,r,pts,offset=0,**kwargs):
         (list(pos_to_pix(x+r*cos(2*pi*(t+offset)/pts),
                          y+r*sin(2*pi*(t+offset)/pts)))
         for t in range(pts)), start=[]), **kwargs)
-    
+
+def texture():
+    k = .5
+    s = .2
+    n = 100
+    for x in range(-n, n):
+        for y in range(-n, n):
+            plot_poly(x*k,y*k,s,8,fill="",outline="#997")
+
 def light():
-    global a
-    global b
-    k = .07
+    k = .1
     n = 100
     for x in range(-n, n):
         x *= k
         for y in range(-n, n):
             y *= k
-            light = int(exp(-(hypot(x,y)/g.sigma)**2)*255) if (x or y) else 255
-            if light:
-                plot_poly(x,y,k/sqrt(2)+.01,4,.5,
-                          fill='#{0:02x}{0:02x}{0:02x}'.format(light))
+            light = exp(-(hypot(x,y)/g.sigma)**2) if (x or y) else 1
+            #print(x,y,light)
+            plot_poly(x,y,k/2,4,.5,
+                      fill='#{0:02x}{0:02x}{0:02x}'.format(int(light*255)))
 
 
 c.create_rectangle(0,0,g.size,g.size,fill='black')
 light()
+#texture()

@@ -18,26 +18,18 @@ def pos_to_pix(x,y):
     ratio = g.size/2*(1-exp(-r/g.sigma))/r
     return g.size/2+x*ratio, g.size/2-y*ratio
 
-def plot_poly(x,y,r,pts,offset=0,**kwargs):
+def plot_circle(x,y,r,pts,**kwargs):
     c.create_polygon(sum(
-        (list(pos_to_pix(x+r*cos(2*pi*(t+offset)/pts),
-                         y+r*sin(2*pi*(t+offset)/pts)))
+        (list(pos_to_pix(x+r*cos(2*pi*t/pts), y+r*sin(2*pi*t/pts)))
         for t in range(pts)), start=[]), **kwargs)
-    
-def light():
-    global a
-    global b
-    k = .07
+
+def grid():
+    k = .5
+    s = .2
     n = 100
     for x in range(-n, n):
-        x *= k
         for y in range(-n, n):
-            y *= k
-            light = int(exp(-(hypot(x,y)/g.sigma)**2)*255) if (x or y) else 255
-            if light:
-                plot_poly(x,y,k/sqrt(2)+.01,4,.5,
-                          fill='#{0:02x}{0:02x}{0:02x}'.format(light))
-
+            plot_circle(x*k,y*k,s,8,fill="",outline="#997")
 
 c.create_rectangle(0,0,g.size,g.size,fill='black')
-light()
+grid()
