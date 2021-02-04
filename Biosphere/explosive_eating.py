@@ -10,7 +10,7 @@ class Para:
 g = Para()
 g.size=700
 g.sigma = 1
-g.eat_efficiency = .9
+g.eat_efficiency = 1
 #g.dt = .05
 
 c = tk.Canvas(width=g.size, height=g.size, highlightthickness=0)

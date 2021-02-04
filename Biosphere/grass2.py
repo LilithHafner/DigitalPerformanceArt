@@ -10,7 +10,7 @@ class Para:
 g = Para()
 g.size=700
 g.sigma = 1
-g.eat_efficiency = .9
+g.eat_efficiency = .5
 #g.dt = .05
 
 c = tk.Canvas(width=g.size, height=g.size, highlightthickness=0)
@@ -76,7 +76,7 @@ while True:
         for f in entities:
             if e is not f and e.size <= f.size and \
                hypot(e.x-f.x, e.y-f.y) < e.size+f.size:
-                e.size = e.size+g.eat_efficiency*f.size
+                e.size = e.size+.5*f.size
                 f.size = 0
     t2 = time.time()-t0
     entities = [e for e in entities if e.size > 0]
