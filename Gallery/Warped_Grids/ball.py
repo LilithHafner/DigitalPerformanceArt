@@ -27,3 +27,4 @@ def grid():
             c.create_line(pos_to_pix(x*k,y*k)+pos_to_pix(x*k,(y+1)*k))
 
 grid()
+tk.mainloop()

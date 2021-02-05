@@ -33,18 +33,21 @@ def texture():
             plot_poly(x*k,y*k,s,8,fill="",outline="#997")
 
 def light():
+    global a
+    global b
     k = .1
     n = 100
     for x in range(-n, n):
+        x *= k
         for y in range(-n, n):
-            x *= k
             y *= k
-            #print(hypot(x,y))
-            light = exp(-(hypot(x,y)/g.sigma)**2) if x or y else 1
-            plot_poly(x,y,k/2,4,.5,
-                      fill='#{0:02x}{0:02x}{0:02x}'.format(int(light*255)))
+            light = int(exp(-(hypot(x,y)/g.sigma)**2)*255) if (x or y) else 255
+            if light:
+                plot_poly(x,y,k/sqrt(2)+.01,4,.5,
+                          fill='#{0:02x}{0:02x}{0:02x}'.format(light))
 
 
 c.create_rectangle(0,0,g.size,g.size,fill='black')
 light()
 #texture()
+tk.mainloop()

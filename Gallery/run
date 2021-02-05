@@ -1,0 +1,1 @@
+for file in $(find $1 -regex .*\.py); do Python3 $file & done

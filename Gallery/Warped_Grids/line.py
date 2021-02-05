@@ -36,11 +36,11 @@ def light():
     k = .1
     n = 100
     for x in range(-n, n):
-        x *= k
         for y in range(-n, n):
+            x *= k
             y *= k
-            light = exp(-(hypot(x,y)/g.sigma)**2) if (x or y) else 1
-            #print(x,y,light)
+            #print(hypot(x,y))
+            light = exp(-(hypot(x,y)/g.sigma)**2) if x or y else 1
             plot_poly(x,y,k/2,4,.5,
                       fill='#{0:02x}{0:02x}{0:02x}'.format(int(light*255)))
 
@@ -48,3 +48,4 @@ def light():
 c.create_rectangle(0,0,g.size,g.size,fill='black')
 light()
 #texture()
+tk.mainloop()
