@@ -1,9 +1,12 @@
+#Establish target path
+TARGET="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${1:-}"
+
 #Close all on exit
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 #Run all
-for file in $(find $1 -regex .*\.py); do Python3 $file & done
-for file in $(find $1 -regex .*\.jar); do java -jar $file & done
+for file in $(find $TARGET -regex .*\.py); do Python3 $file & done
+for file in $(find $TARGET -regex .*\.jar); do java -jar $file & done
 
 #Block till close
 while :; do sleep 100000; done
