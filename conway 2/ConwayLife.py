@@ -7,9 +7,9 @@ depth = int(np.log(255)*timespan)
 width = 640#1280#
 height = 480#720#
 margin = 0
-video = np.inf
+video = 0#np.inf
 frame_rate = 30 if video else 18
-ticks_per_frame = 1
+ticks_per_frame = 3
 def cadence(t):
     return np.sin(t*np.pi*2/60/3)*.5+.5
 
@@ -49,10 +49,12 @@ class HistoryWorld:
         self.depth = depth
 #        self.ones = np.ones((1,)+shape)
         
-    def tick(self, light):
+    def tick(self, light, count=1):
         tt[0] -= time()
         #Update worlds
         tick(self.worlds[-1], light, self.worlds[0])#7.5%
+        for i in range(count-1):
+            tick(self.worlds[0], light)
         tt[0] += time()
         tt[1] -= time()        
         self.worlds = np.roll(self.worlds, -1, axis=0)#4% \/
@@ -81,7 +83,8 @@ class HistoryWorld:
 
         tt[2] += time()
         tt[3] -= time()     
-        out = (np.minimum(self.future, depth).astype(np.int16)-np.minimum(self.past, depth))/depth
+        out = (np.minimum(self.future, self.depth).astype(np.int16)
+                -np.minimum(self.past, self.depth))/self.depth
         tt[3] += time()
         return out
         
@@ -102,9 +105,6 @@ try:
     while w.write(np.dstack(((world.tick(cadence(sim_time))[slc, slc]+1)* \
         127,)*3)) == -1 or (video and sim_time < video):
         sim_time += 1/frame_rate/ticks_per_frame
-        for _ in range(ticks_per_frame-1):
-            sim_time += 1/frame_rate/ticks_per_frame
-            tick(world, cadence(sim_time))
         if video and time() > t0 + next_print:
             t = time()-t0
             next_print += last_print
