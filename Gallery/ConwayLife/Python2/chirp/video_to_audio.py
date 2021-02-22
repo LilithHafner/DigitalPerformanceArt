@@ -43,7 +43,7 @@ class Synths:
         r2 = (x**2+y**2)
         k = (shape[0]**2+shape[1]**2)/4/(len(self.synths))
         self.regions = [np.where((i*k<=r2) & (r2<(i+1)*k))
-                        for i in range(len(self.synths))][::-1]
+                        for i in range(len(self.synths))]
 
     def set_by_frame(self, frame):
         if frame.shape != self.shape:
