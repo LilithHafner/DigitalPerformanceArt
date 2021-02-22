@@ -5,7 +5,7 @@ TARGET="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${1:-}
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 #Run all
-for file in $(find $TARGET -regex .*\.py); do Python3 $file & done
+for file in $(find $TARGET -regex .*\.py); do python3 $file & done
 for file in $(find $TARGET -regex .*\.jar); do java -jar $file & done
 
 #Block till close

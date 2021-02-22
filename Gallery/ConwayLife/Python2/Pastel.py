@@ -2,14 +2,14 @@ import numpy as np
 from time import time
 
 #Parameters
-width = 640#1280#
-height = 480#720#
-timespan = .5
+timespan = 16
+depth = int(np.log(255)*timespan)
+width = 1280#640#
+height = 720#480#
 margin = 0
 video = 0#np.inf
-frame_rate = 30 if video else 18
-ticks_per_frame = 3
-depth = int(timespan*frame_rate)#int(np.log(255)*timespan)
+frame_rate = 30 if video else 10
+ticks_per_frame = 5
 def cadence(t):
     return np.sin(t*np.pi*2/60/3)*.5+.5
 
