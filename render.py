@@ -1,4 +1,5 @@
 from numpy import *
+import builtins
 from PIL import Image, ImageDraw
 from cv2 import imshow, waitKey
 
@@ -13,7 +14,7 @@ color is (r,g,b) or None for a white outline.'''
         xt, yt = arctan2(x,z), arctan2(y,z)
         rt = arctan2(r, sqrt(x**2+y**2+z**2))
         scale = size[0]/tan(fov/2)
-        pts = __builtins__.sum([[size[0]/2+scale*tan(xt+rt*cos),
+        pts = builtins.sum([[size[0]/2+scale*tan(xt+rt*cos),
                                  size[1]/2-scale*tan(yt+rt*sin)]
                                 for sin, cos in sincoss],[])
         draw.polygon(pts, fill=color)
@@ -24,8 +25,12 @@ color is (r,g,b) or None for a white outline.'''
 #x,d = render([[10,3,4,5,None]])
 #x.show()
 
-for i in range(-100, 100):
-    x = render([[100,i,40,50,None]])
-    imshow('Sphere', array(x))
-    if waitKey(10) != -1:
-        break
+def show(img, name=''):
+    imshow(name, array(img))
+    
+if __name__ == '__main__':
+    for i in range(-100, 100):
+        x = render([[100,i,40,50,None]])
+        show(x, 'Sphere')
+        if waitKey(10) != -1:
+            break
