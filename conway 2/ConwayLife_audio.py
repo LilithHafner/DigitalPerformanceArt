@@ -3,8 +3,8 @@ from time import time
 from video_to_audio import Synths
 
 #Parameters
-width = 640#1280#
-height = 480#720#
+width = 640//2#1280#
+height = 480//2#720#
 timespan = .5
 margin = 0
 video = 0#np.inf
@@ -99,7 +99,7 @@ if video:
 else:
     from ScreenDisplay import Writer
 w = Writer('Conway Life', frame_rate = frame_rate)
-a = Synths()
+a = Synths(synth_count=80, gain=-100)
 
 world = HistoryWorld((height+margin*2, width+margin*2), depth)
 sim_time = 0
@@ -107,9 +107,8 @@ slc = slice(margin, -margin) if margin else slice(None)
 keep_going = True
 try:
     while keep_going:
-        diff = world.worlds[1].astype(np.float16)-world.worlds[0]
-        audio_frame = np.maximum(diff,0)*300-40
-        a.set_by_frame(audio_frame)
+        diff = world.worlds[2].astype(np.float16)-world.worlds[1]*2+world.worlds[0]
+        a.set_by_frame(diff, func = lambda val,freq:np.log(max(val,10**-100))*10+10)
         
         for i in range(frames_per_audio):
             frame = world.tick(cadence(sim_time), ticks_per_frame)[slc, slc]
@@ -128,10 +127,11 @@ try:
                 print(['{:.1f}%'.format(ttt/t*100) for ttt in tt])
         
 finally:
-    print([s.get('gain') for s in a.synths])
-    print(np.log(np.sum(np.exp(np.array([s.get('gain') for s in a.synths])))))
+    #out = [s.get('gain') for s in a.synths],
+    #out = out, np.log(np.sum(np.exp(np.array(out))))
     a.release()
     w.release()
+    #print(out, sep='\n')
 
 
 ##world = np.zeros((height+margin*2, width+margin*2), np.uint8)

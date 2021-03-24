@@ -14,15 +14,15 @@ from math import log10, hypot
 import numpy as np
 
 class Synths:
-    def __init__(self, synth_count = 20, gain = -18):
+    def __init__(self, synth_count = 20, gain = -20):
         server = Server()
         self.synths = []
         self.shape = None
-        for f in range(synth_count):
-            freq = 150*(1000/150)**(f/(synth_count-1))
-            synth_gain = gain - 10*log10(synth_count)
-            self.synths.append(Synth(server, 'sine',
-                                     {'freq': freq, 'gain': synth_gain}))
+        self.freqs = [150*(1000/150)**(f/(synth_count-1))
+                      for f in range(synth_count)]
+        gain -= 10*log10(synth_count)
+        self.synths = [Synth(server, 'sine', {'freq': freq, 'gain': gain})
+                       for freq in self.freqs]
 
     def set_gains(self, gains):
         try:
@@ -45,10 +45,12 @@ class Synths:
         self.regions = [np.where((i*k<=r2) & (r2<(i+1)*k))
                         for i in range(len(self.synths))][::-1]
 
-    def set_by_frame(self, frame):
+    def set_by_frame(self, frame, func=lambda val, freq: val):
         if frame.shape != self.shape:
             self.set_regions(frame.shape)
-        self.set_gains([np.average(frame[region]) for region in self.regions])
+        self.set_gains([
+            func(np.average(frame[region]),self.freqs[i])
+            for i,region in enumerate(self.regions)])
 
 if __name__ == '__main__':
-    s = Synths(gain=-18)
+    s = Synths()
