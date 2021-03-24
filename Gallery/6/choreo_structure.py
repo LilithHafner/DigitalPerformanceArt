@@ -1,6 +1,8 @@
 unique = True
 #1 indexing!
 from time import time
+t00 = time()
+print('Choreographing, please wait. This may take 5-15 minutes...')
 t_import = -time()
 import cv2
 import numpy as np
@@ -152,7 +154,7 @@ t_negl += time()
 if not unique:
     print(name)
 else:
-    input("Loaded")
+    input("Loaded. Press enter to display.")
     reader = cv2.VideoCapture(file)
     title = np.random.choice(titles)
     writer = Writer(title, 29.387754/2)
