@@ -88,6 +88,6 @@ while True:
         try:
             end(world, graphics)
         except StopIteration:
-            time.sleep(.1)
+            time.sleep(1)
         break
 
